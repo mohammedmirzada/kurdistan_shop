@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{>meta}}
+</head>
+<body>
+{{>header}}
+<div class="max-home">
+    <h1 class="border-bot">API Usage:</h1>
+    <h3>Adding</h3>
+    <ul>
+        <li><code>http://localhost:3000/api?<span class="for_li">method</span>=add&<span class="for_li">tb</span>=stores&<span class="for_li">name</span>=[required]&<span class="for_li">logo</span>=[option]</code></li>
+        <li><code>http://localhost:3000/api?<span class="for_li">method</span>=add&<span class="for_li">tb</span>=categories&<span class="for_li">name</span>=[required]&<span class="for_li">image</span>=[option]&<span class="for_li">store_id</span>=[required]</code></li>
+        <li><code>http://localhost:3000/api?<span class="for_li">method</span>=add&<span class="for_li">tb</span>=products&<span class="for_li">name</span>=[required]&<span class="for_li">image</span>=[option]&<span class="for_li">price</span>=[required]&<span class="for_li">category_id</span>=[required]</code></li>
+    </ul>
+    <h3>Updating</h3>
+    <ul>
+        <li><code>http://localhost:3000/api?<span class="for_li">method</span>=change&<span class="for_li">tb</span>=stores&<span class="for_li">name</span>=[]&<span class="for_li">logo</span>=[]</code></li>
+        <li><code>http://localhost:3000/api?<span class="for_li">method</span>=change&<span class="for_li">tb</span>=categories&<span class="for_li">name</span>=[]&<span class="for_li">image</span>=[]&<span class="for_li">store_id</span>=[]</code></li>
+        <li><code>http://localhost:3000/api?<span class="for_li">method</span>=change&<span class="for_li">tb</span>=products&<span class="for_li">where</span>=[required]&<span class="for_li">name</span>=[]&<span class="for_li">image</span>=[]&<span class="for_li">price</span>=[]&<span class="for_li">category_id</span>=[]</code></li>
+    </ul>
+    <h3>Deleting</h3>
+    <ul>
+        <li><code>http://localhost:3000/api?<span class="for_li">method</span>=delete&<span class="for_li">tb</span>=[table_name is required]&<span class="for_li">id</span>=[row_id]</code></li>
+    </ul>
+    <h3>Selecting</h3>
+    <ul>
+        <li><code>http://localhost:3000/api?<span class="for_li">method</span>=get&<span class="for_li">tb</span>=[table_name is required]&<span class="for_li">where</span>=[where statement is optional]&<span class="for_li">limit</span>=[limit statement is optional]</code></li>
+    </ul>
+</div>
+{{>footer}}
+</body>
+</html>

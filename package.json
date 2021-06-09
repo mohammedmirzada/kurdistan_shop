@@ -1,0 +1,29 @@
+{
+  "name": "kurdistan_shop",
+  "version": "1.0.0",
+  "description": "This is a task project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohammedmirzada/kurdistan_shop.git"
+  },
+  "author": "Mohammed Mirzada",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mohammedmirzada/kurdistan_shop/issues"
+  },
+  "homepage": "https://github.com/mohammedmirzada/kurdistan_shop#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "hbs": "^4.1.2",
+    "http": "0.0.1-security",
+    "lodash": "^4.17.21",
+    "mysql": "^2.18.1",
+    "path": "^0.12.7",
+    "react-ds": "^1.13.0"
+  }
+}

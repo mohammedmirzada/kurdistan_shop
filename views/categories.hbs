@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{>meta}}
+</head>
+<body>
+{{>header}}
+<div class="max-home">
+    <a href="javascript:history.back()" class="ahref_back"> < Back to stores</a>
+    <h2>Add Category</h2>
+    <div>
+        <input class="inp__"  type="text" placeholder="Category name" id="category_name">
+        <input class="inp__" type="text" placeholder="Ctegory image url" id="category_image">
+        <button onclick="AddCategory()" class="butt__">Add</button>
+    </div>
+    <h2>All Categories for <u id="inner_sn"></u></h2>
+    <table id="tablee">
+        <tr>
+            <th>Name</th>
+            <th>Image</th>
+            <th>Action</th>
+        </tr>
+    </table>
+</div>
+
+<script type="text/babel">
+    ge('inner_sn').innerHTML = getQuery('store_name')
+
+    fetch("http://localhost:3000/api?method=get&tb=categories&where=store_id="+getQuery('store_id')).then(
+        function(response) {
+            response.json().then(function(data) {
+                if(data.rows > 0){
+                    data.result.forEach(function(item, position){
+                        ge('tablee').innerHTML += '<tr><td>'+item.name+'</td><td><img src="'+item.image+'" class="img_into"></td><td><a onclick="Delete('+item.id+')" style="color: #b11515;" class="del_up_into">Delete</a><a href="/products?category_name='+item.name+'&category_id='+item.id+'" class="cat_in_stores">Show Products</a></td></tr>'
+                    });
+                }
+            });
+        }
+    ).catch(function(err) {});
+
+    function AddCategory(){
+        var name = ge('category_name').value;
+        var image = ge('category_image').value;
+        fetch("http://localhost:3000/api?method=add&tb=categories&name="+encodeURIComponent(name)+"&image="+encodeURIComponent(image)+"&store_id="+getQuery('store_id')).then(
+            function(response) {
+                response.json().then(function(data) {
+                    if(data.msg == "OK"){
+                        alert(data.sql)
+                    }else{
+                        alert(data.error)
+                    }
+                }
+            );
+        }).catch(function(err) {});
+    }
+
+    function Delete(id){
+        var r = confirm("Are sure want to delete it ? All products which are linked to this category will not be accessible again.");
+        if (r == true) {
+            fetch("http://localhost:3000/api?method=delete&tb=categories&id="+id).then(
+                function(response) {
+                    response.json().then(function(data) {
+                        if(data.msg == "OK"){
+                            alert(data.sql)
+                        }else{
+                            alert(data.error)
+                        }
+                    }
+                );
+            }).catch(function(err) {});
+        }
+    }
+
+</script>
+
+{{>footer}}
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{>meta}}
+</head>
+<body>
+{{>header}}
+<div class="max-home">
+    <a href="javascript:history.back()" class="ahref_back"> < Back to categories</a>
+    <h2>Add Product</h2>
+    <div>
+        <input class="inp__"  type="text" placeholder="Product name" id="product_name">
+        <input class="inp__" type="text" placeholder="Product Price" id="product_price">
+        <input class="inp__" type="text" placeholder="Product image url" id="product_image">
+        <button onclick="AddProduct()" class="butt__">Add</button>
+    </div>
+    <h2>All Products for <u id="inner_sn"></u></h2>
+    <table id="tablee">
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Action</th>
+        </tr>
+    </table>
+</div>
+
+<script type="text/babel">
+    ge('inner_sn').innerHTML = getQuery('category_name')
+
+    fetch("http://localhost:3000/api?method=get&tb=products&where=category_id="+getQuery('category_id')).then(
+        function(response) {
+            response.json().then(function(data) {
+                data.result.forEach(function(item, position){
+                    ge('tablee').innerHTML += '<tr><td><img src="'+item.image+'" class="img_into"></td><td>'+item.name+'</td><td>$'+item.price+'</td><td><a onclick="Delete('+item.id+')" style="color: #b11515;" class="del_up_into">Delete</a></td></tr>'
+                });
+            });
+        }
+    ).catch(function(err) {});
+
+    function AddProduct(){
+        var name = ge('product_name').value;
+        var price = ge('product_price').value;
+        var image = ge('product_image').value;
+        fetch("http://localhost:3000/api?method=add&tb=products&name="+name+"&image="+image+"&price="+price+"&category_id="+getQuery('category_id')).then(
+            function(response) {
+                response.json().then(function(data) {
+                    if(data.msg == "OK"){
+                        alert(data.sql)
+                    }else{
+                        alert(data.error)
+                    }
+                }
+            );
+        }).catch(function(err) {});
+    }
+
+    function Delete(id){
+        var r = confirm("Are sure want to delete it ?");
+        if (r == true) {
+            fetch("http://localhost:3000/api?method=delete&tb=products&id="+id).then(
+                function(response) {
+                    response.json().then(function(data) {
+                        if(data.msg == "OK"){
+                            alert(data.sql)
+                        }else{
+                            alert(data.error)
+                        }
+                    }
+                );
+            }).catch(function(err) {});
+        }
+    }
+
+</script>
+
+{{>footer}}
+</body>
+</html>

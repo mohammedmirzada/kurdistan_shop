@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{>meta}}
+</head>
+<body>
+{{>header}}
+<div class="max-home">
+    <h2>Add Store</h2>
+    <div>
+        <input class="inp__"  type="text" placeholder="Store name" id="store_name">
+        <input class="inp__" type="text" placeholder="Logo url" id="store_logo">
+        <button onclick="AddStore()" class="butt__">Add</button>
+    </div>
+    <h2>All Stores</h2>
+    <table id="tablee">
+        <tr>
+            <th>Logo</th>
+            <th>Name</th>
+            <th>Action</th>
+        </tr>
+    </table>
+    <div id="inner_pagination"></div>
+</div>
+<script type="text/babel">
+
+    //PAGINATION
+    fetch("http://localhost:3000/api?method=get&tb=stores").then(
+        function(response) {
+            response.json().then(function(data) {
+                if(getQuery('p')){
+                    var current_page = getQuery('p')
+                }else{
+                    var current_page = 1
+                }
+                var rum_rows = data.rows
+                var records_per_page = 5;
+                var number_of_pages = Math.ceil(rum_rows/records_per_page);
+                var this_page_first_result = (current_page-1)*records_per_page;
+                fetch("http://localhost:3000/api?method=get&tb=stores&limit="+this_page_first_result+","+records_per_page).then(
+                    function(response) {
+                        response.json().then(function(data) {
+                            data.result.forEach(function(item, position){
+                                ge('tablee').innerHTML += '<tr><td><img src="'+item.logo+'" class="img_into"></td><td>'+item.name+'</td><td><a onclick="Delete('+item.id+')" style="color: #b11515;" class="del_up_into">Delete</a><a href="/categories?store_name='+item.name+'&store_id='+item.id+'" class="cat_in_stores">Show Categories</a></td></tr>'
+                            });
+                        });
+                    }
+                ).catch(function(err) {});
+                var data_html = '<div align="center"><div class="_page_nn_que">'
+                for (current_page=1;current_page<=number_of_pages;current_page++) {
+                    if (getQuery('p') == current_page) {
+                        data_html += '<a class="href_Loadpages_que" style="background: #2b40651c;" href="/stores?p='+current_page+'">'+current_page+'</a> ';
+                    }else if(getQuery('p')){
+                        if (current_page == 1) {
+                            data_html += '<a class="href_Loadpages_que" style="background: #2b40651c;" href="/stores?p='+current_page+'">'+current_page+'</a> ';
+                        }else{
+                            data_html += '<a class="href_Loadpages_que" href="/stores?p='+current_page+'">'+current_page+'</a> ';
+                        }
+                    }else{
+                        data_html += '<a class="href_Loadpages_que" href="/stores?p='+current_page+'">'+current_page+'</a> ';
+                    }
+                }
+                data_html += '</div></div>';
+                ge('inner_pagination').innerHTML = data_html
+            });
+        }
+    ).catch(function(err) {});
+
+    function AddStore(){
+        var name = ge('store_name').value;
+        var logo = ge('store_logo').value;
+        fetch("http://localhost:3000/api?method=add&tb=stores&name="+name+"&logo="+logo).then(
+            function(response) {
+                response.json().then(function(data) {
+                    if(data.msg == "OK"){
+                        alert(data.sql)
+                    }else{
+                        alert(data.error)
+                    }
+                }
+            );
+        }).catch(function(err) {});
+    }
+
+    function Delete(id){
+        var r = confirm("Are sure want to delete it ? All categories which are linked to this store will not be accessible again.");
+        if (r == true) {
+            fetch("http://localhost:3000/api?method=delete&tb=stores&id="+id).then(
+                function(response) {
+                    response.json().then(function(data) {
+                        if(data.msg == "OK"){
+                            alert(data.sql)
+                        }else{
+                            alert(data.error)
+                        }
+                    }
+                );
+            }).catch(function(err) {});
+        }
+    }
+
+</script>
+
+{{>footer}}
+</body>
+</html>

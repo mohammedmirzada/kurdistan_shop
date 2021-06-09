@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{>meta}}
+</head>
+<body>
+{{>header}}
+<div class="max-home">
+    <h1>Welcome to Dashboard</h1>
+    <div class="home_st"><h3><span id="stores_inn"></span> Stores</h3></div>
+    <div class="home_st"><h3><span id="products_inn"></span> Products</h3></div>
+    <div class="home_st"><h3><span id="categories_inn"></span> Categories</h3></div>
+    <h3>Notes:</h3>
+    <ul>
+        <li>The Admin Panel is about managing an electronic shop.</li>
+        <li>All the available images and logos are stored online.</li>
+        <li>MYSQL data is saved offline, I used the XAMPP server for that purpose.</li>
+        <li>The Admin Panel doesn't have any feature to protect against some vulnerabilities like SQL Injection and XSS.</li>
+        <li>To handle more than 200+ items I have added pagination to the (stores) page.</li>
+        <li>The Web Application design isn't responsive.</li>
+    </ul>
+</div>
+
+<script type="text/babel">
+
+    fetch("http://localhost:3000/api?method=get&tb=stores").then(
+        function(response) {
+            response.json().then(function(data) {
+                ge('stores_inn').innerHTML = data.rows
+            }
+        );
+    }).catch(function(err) {});
+
+    fetch("http://localhost:3000/api?method=get&tb=products").then(
+        function(response) {
+            response.json().then(function(data) {
+                ge('products_inn').innerHTML = data.rows
+            }
+        );
+    }).catch(function(err) {});
+
+    fetch("http://localhost:3000/api?method=get&tb=categories").then(
+        function(response) {
+            response.json().then(function(data) {
+                ge('categories_inn').innerHTML = data.rows
+            }
+        );
+    }).catch(function(err) {});
+
+</script>
+
+{{>footer}}
+</body>
+</html>
